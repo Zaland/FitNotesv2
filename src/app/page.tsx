@@ -1,7 +1,7 @@
 "use client";
 
-import { Navbar } from "./components/navbar";
+import { AuthNavbar } from "./components/navbar/AuthNavbar";
 
 export default function Page() {
-    return <Navbar />;
+    return <AuthNavbar />;
 }

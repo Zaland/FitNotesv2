@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 
-export const Navbar = () => {
+export const AuthNavbar = () => {
     const { colorMode, toggleColorMode } = useColorMode();
 
     return (
