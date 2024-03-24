@@ -7,12 +7,8 @@ import { usePathname } from "next/navigation";
 
 const paths = [
     {
-        route: "/auth/login",
+        route: "/api/auth/login",
         label: "Login",
-    },
-    {
-        route: "/auth/signup",
-        label: "Signup",
     },
 ];
 

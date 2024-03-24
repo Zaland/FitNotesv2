@@ -26,7 +26,7 @@ export const AuthNavbar = () => {
 
                     <Flex alignItems="center">
                         <Stack direction="row" spacing={7}>
-                            <Button onClick={toggleColorMode}>
+                            <Button onClick={toggleColorMode} bg="none">
                                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
                             </Button>
 
@@ -36,7 +36,9 @@ export const AuthNavbar = () => {
                                 </MenuButton>
                                 <MenuList alignItems="center">
                                     <MenuItem>Settings</MenuItem>
-                                    <MenuItem>Logout</MenuItem>
+                                    <MenuItem as="a" href="/api/auth/logout">
+                                        Logout
+                                    </MenuItem>
                                 </MenuList>
                             </Menu>
                         </Stack>
