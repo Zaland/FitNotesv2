@@ -10,12 +10,11 @@ import {
     MenuList,
     MenuItem,
     Text,
-    VStack,
     HStack,
     useColorModeValue,
-    Stack,
     useColorMode,
 } from "@chakra-ui/react";
+import NextLink from "next/link";
 import { MoonIcon, SunIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
@@ -26,12 +25,11 @@ export const AuthNavbar = () => {
     return (
         <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
             <Flex h={16} alignItems="center" justifyContent="space-between">
-                <Box as="a" href="/">
+                <Box as={NextLink} href="/">
                     FitNotes
                 </Box>
 
                 <Flex alignItems="center" gap={7}>
-                    {/* <Stack direction="row" spacing={7}> */}
                     <Button onClick={toggleColorMode} bg="none">
                         {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
                     </Button>
@@ -52,23 +50,15 @@ export const AuthNavbar = () => {
                                 </Box>
                             </HStack>
                         </MenuButton>
-                        {/* <MenuButton as={Button} rounded="full" variant="link" cursor="pointer" minW={0} mr={3}>
-                                <Avatar
-                                    size="sm"
-                                    bg={colorMode === "light" ? "black" : "gray"}
-                                    src={user?.picture || ""}
-                                />
-                            </MenuButton> */}
                         <MenuList alignItems="center">
-                            <MenuItem as="a" href="/settings">
+                            <MenuItem as={NextLink} href="/settings">
                                 Settings
                             </MenuItem>
-                            <MenuItem as="a" href="/api/auth/logout">
+                            <MenuItem as={NextLink} href="/api/auth/logout">
                                 Logout
                             </MenuItem>
                         </MenuList>
                     </Menu>
-                    {/* </Stack> */}
                 </Flex>
             </Flex>
         </Box>
