@@ -1,10 +1,9 @@
 "use client";
 
-import { Navbar } from "./components/navbar/Navbar";
-import { AuthNavbar } from "./components/navbar/AuthNavbar";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import { AuthNavbar, Navbar } from "./components";
 
-export default function Page() {
+const Page = () => {
     const { user } = useUser();
 
     return (
@@ -13,4 +12,6 @@ export default function Page() {
             <a href="/api/auth/login">Test</a>
         </>
     );
-}
+};
+
+export default Page;
