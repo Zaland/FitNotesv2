@@ -1,6 +1,6 @@
 "use client";
 
-import { Flex, Stack, Text, useColorModeValue } from "@chakra-ui/react";
+import { Stack, Text, Box, Heading, Container } from "@chakra-ui/react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { redirect } from "next/navigation";
 import { Navbar } from "./components";
@@ -15,21 +15,16 @@ const Page = () => {
     return (
         <>
             <Navbar />
-            <Flex justify="center" bg={useColorModeValue("gray.50", "gray.800")}>
-                <Stack
-                    spacing={4}
-                    w="full"
-                    maxW="md"
-                    bg={useColorModeValue("white", "gray.700")}
-                    rounded="xl"
-                    boxShadow="lg"
-                    p={6}
-                    my={12}
-                    align="center"
-                >
-                    <Text>Welcome to FitNotes</Text>
+            <Container maxW="3xl">
+                <Stack as={Box} textAlign="center" spacing={{ base: 8, md: 14 }} py={{ base: 20, md: 36 }}>
+                    <Heading fontWeight={600} fontSize={{ base: "2xl", sm: "4xl", md: "6xl" }} lineHeight="110%">
+                        Track your workouts <br />
+                        <Text as="span" color="green.400">
+                            Make progress
+                        </Text>
+                    </Heading>
                 </Stack>
-            </Flex>
+            </Container>
         </>
     );
 };
