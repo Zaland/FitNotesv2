@@ -3,18 +3,9 @@
 import { Box, Flex, Button, useColorModeValue, Stack, useColorMode } from "@chakra-ui/react";
 import { Link } from "@chakra-ui/next-js";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
-import { usePathname } from "next/navigation";
-
-const paths = [
-    {
-        route: "/api/auth/login",
-        label: "Login",
-    },
-];
 
 export const Navbar = () => {
     const { colorMode, toggleColorMode } = useColorMode();
-    const pathname = usePathname();
 
     return (
         <>
@@ -27,14 +18,11 @@ export const Navbar = () => {
                             <Button onClick={toggleColorMode} bg="none">
                                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
                             </Button>
-
-                            {paths.map((path) => (
-                                <Flex key={path.label} alignItems="center" justifyContent="space-between">
-                                    <Link variant={pathname === path.route ? "active" : "default"} href={path.route}>
-                                        {path.label}
-                                    </Link>
-                                </Flex>
-                            ))}
+                            <Flex alignItems="center" justifyContent="space-between">
+                                <Link variant="default" href="/api/auth/login">
+                                    Login
+                                </Link>
+                            </Flex>
                         </Stack>
                     </Flex>
                 </Flex>

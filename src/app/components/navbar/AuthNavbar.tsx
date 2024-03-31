@@ -51,7 +51,7 @@ export const AuthNavbar = () => {
                             </HStack>
                         </MenuButton>
                         <MenuList alignItems="center">
-                            <MenuItem as={NextLink} href="/settings">
+                            <MenuItem as={NextLink} href="/dashboard/settings">
                                 Settings
                             </MenuItem>
                             <MenuItem as={NextLink} href="/api/auth/logout">
