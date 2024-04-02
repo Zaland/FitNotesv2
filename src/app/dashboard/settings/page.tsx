@@ -31,8 +31,10 @@ const Settings = () => {
                     p={6}
                     my={12}
                 >
-                    <Heading>Settings</Heading>
-                    <FormControl id="userIcon">
+                    <Heading textAlign="center" color="green.400">
+                        Settings
+                    </Heading>
+                    <FormControl id="userIcon" textAlign="center">
                         <Avatar size="xl" bg={colorMode === "light" ? "black" : "gray"} src={user?.picture || ""} />
                     </FormControl>
                     <FormControl id="name" isRequired>
