@@ -1,9 +1,15 @@
 "use client";
 
 import { Flex, Stack, Heading, useColorModeValue } from "@chakra-ui/react";
-import { withPageAuthRequired } from "@auth0/nextjs-auth0/client";
+import { withPageAuthRequired, useUser } from "@auth0/nextjs-auth0/client";
+import { trpc } from "../_trpc/client";
 
 const Dashboard = () => {
+    const { user } = useUser();
+
+    const { data: lis, error } = trpc.getUser.useQuery({ email: user?.email || "", name: user?.name || "" });
+    console.log({ lis, error, user });
+
     return (
         <Flex justify={"center"} bg={useColorModeValue("gray.50", "gray.800")}>
             <Stack

@@ -9,7 +9,8 @@ datasource db {
 
 model User {
   id        Int       @id @unique @default(autoincrement())
-  authId    String    @unique
+  email     String    @unique
+  name      String    
   settings  Settings?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now())
