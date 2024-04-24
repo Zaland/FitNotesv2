@@ -4,12 +4,12 @@ import { prisma } from "../../config/prisma";
 import { router, authProcedure } from "../trpc";
 
 export const userRouter = router({
-    getUser: authProcedure.input(z.object({ email: z.string(), name: z.string() })).query(async ({ input }) => {
-        let user = await prisma.user.findFirst({ where: { email: input.email } });
+    getUser: authProcedure.query(async ({ input, ctx }) => {
+        let user = await prisma.user.findFirst({ where: { email: ctx.user.email } });
 
         // if user doesn't exist, and they are authed, then add them to the database
         if (!user) {
-            user = await prisma.user.create({ data: { email: input.email, name: input.name } });
+            user = await prisma.user.create({ data: { email: ctx.user.email, name: ctx.user.name } });
         }
 
         let settings = await prisma.settings.findFirst({ where: { userId: user.id } });
@@ -19,6 +19,6 @@ export const userRouter = router({
             settings = await prisma.settings.create({ data: { userId: user.id } });
         }
 
-        return { ...user, ...settings };
+        return { ...user, settings: { ...settings } };
     }),
 });
