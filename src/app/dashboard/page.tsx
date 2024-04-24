@@ -7,7 +7,9 @@ import { trpc } from "../_trpc/client";
 const Dashboard = () => {
     const { user } = useUser();
 
-    const { data: lis, error } = trpc.getUser.useQuery({ email: user?.email || "", name: user?.name || "" });
+    const { data: lis, error } = trpc.getUser.useQuery();
+    // const { data: list } = trpc.updateSettings.useQuery({ darkMode: true, weightLb: true });
+
     console.log({ lis, error, user });
 
     return (
