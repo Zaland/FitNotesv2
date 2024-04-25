@@ -13,6 +13,7 @@ import {
     Avatar,
     useColorMode,
     Switch,
+    useToast,
 } from "@chakra-ui/react";
 import { useUser, withPageAuthRequired } from "@auth0/nextjs-auth0/client";
 
@@ -21,30 +22,48 @@ import { trpc } from "../../_trpc/client";
 const Settings = () => {
     const { user: authUser } = useUser();
     const { colorMode } = useColorMode();
-    const { data: user } = trpc.getUser.useQuery();
-    const mutation = trpc.updateSettings.useMutation();
+    const toast = useToast();
 
+    const { data: user, isLoading } = trpc.getUser.useQuery();
+    const userMutation = trpc.updateUser.useMutation({
+        onSuccess: () => toast({ title: "User updated", status: "success", duration: 5000, isClosable: true }),
+        onError: () => toast({ title: "User failed to update", status: "error", duration: 5000, isClosable: true }),
+    });
+    const settingsMutation = trpc.updateSettings.useMutation({
+        onSuccess: () => toast({ title: "Settings updated", status: "success", duration: 5000, isClosable: true }),
+        onError: () => toast({ title: "Settings failed to update", status: "error", duration: 5000, isClosable: true }),
+    });
+
+    const [name, setName] = useState(user?.name);
+    const [email, setEmail] = useState(user?.email);
     const [darkMode, setDarkMode] = useState(user?.settings.darkMode);
     const [weightLb, setWeightLb] = useState(user?.settings.weightLb);
-    const [touched, setTouched] = useState(false);
+    const [userTouched, setUserTouched] = useState(false);
+    const [settingsTouched, setSettingsTouched] = useState(false);
 
     useEffect(() => {
-        setDarkMode(user?.settings.darkMode);
-    }, [user?.settings.darkMode]);
-
-    useEffect(() => {
-        setWeightLb(user?.settings.weightLb);
-    }, [user?.settings.weightLb]);
+        handleReset();
+    }, [isLoading]);
 
     const handleReset = () => {
+        setName(user?.name);
+        setEmail(user?.email);
         setDarkMode(user?.settings.darkMode);
         setWeightLb(user?.settings.weightLb);
-        setTouched(false);
+        setUserTouched(false);
+        setSettingsTouched(false);
     };
 
     const handleUpdate = async () => {
-        await mutation.mutate({ darkMode, weightLb });
-        setTouched(false);
+        if (settingsTouched) {
+            await settingsMutation.mutate({ darkMode, weightLb });
+            setSettingsTouched(false);
+        }
+
+        if (userTouched) {
+            await userMutation.mutate({ name, email });
+            setUserTouched(false);
+        }
     };
 
     return (
@@ -68,11 +87,27 @@ const Settings = () => {
                     </FormControl>
                     <FormControl id="name" isRequired>
                         <FormLabel>Name</FormLabel>
-                        <Input placeholder="Name" type="text" value={user?.name || ""} disabled />
+                        <Input
+                            placeholder="Name"
+                            type="text"
+                            value={name || ""}
+                            onChange={(event) => {
+                                setName(event.target.value);
+                                setUserTouched(true);
+                            }}
+                        />
                     </FormControl>
                     <FormControl id="email" isRequired>
                         <FormLabel>Email address</FormLabel>
-                        <Input placeholder="Email" type="email" value={user?.email || ""} disabled />
+                        <Input
+                            placeholder="Email"
+                            type="email"
+                            value={email || ""}
+                            onChange={(event) => {
+                                setEmail(event.target.value);
+                                setUserTouched(true);
+                            }}
+                        />
                     </FormControl>
                     <FormControl id="darkMode" isRequired>
                         <FormLabel>Dark mode</FormLabel>
@@ -81,7 +116,7 @@ const Settings = () => {
                             colorScheme="green"
                             onChange={() => {
                                 setDarkMode((prev) => !prev);
-                                setTouched(true);
+                                setSettingsTouched(true);
                             }}
                         />
                     </FormControl>
@@ -92,15 +127,25 @@ const Settings = () => {
                             isChecked={weightLb}
                             onChange={() => {
                                 setWeightLb((prev) => !prev);
-                                setTouched(true);
+                                setSettingsTouched(true);
                             }}
                         />
                     </FormControl>
                     <Stack spacing={6} direction={["column", "row"]}>
-                        <Button w="full" colorScheme="red" isDisabled={!touched} onClick={handleReset}>
+                        <Button
+                            w="full"
+                            colorScheme="red"
+                            isDisabled={!userTouched && !settingsTouched}
+                            onClick={handleReset}
+                        >
                             Cancel
                         </Button>
-                        <Button w="full" colorScheme="green" isDisabled={!touched} onClick={handleUpdate}>
+                        <Button
+                            w="full"
+                            colorScheme="green"
+                            isDisabled={!userTouched && !settingsTouched}
+                            onClick={handleUpdate}
+                        >
                             Submit
                         </Button>
                     </Stack>

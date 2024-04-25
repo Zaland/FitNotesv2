@@ -4,7 +4,7 @@ import { prisma } from "../../config/prisma";
 import { router, authProcedure } from "../trpc";
 
 export const userRouter = router({
-    getUser: authProcedure.query(async ({ input, ctx }) => {
+    getUser: authProcedure.query(async ({ ctx }) => {
         let user = await prisma.user.findFirst({ where: { email: ctx.user.email } });
 
         // if user doesn't exist, and they are authed, then add them to the database
@@ -21,4 +21,19 @@ export const userRouter = router({
 
         return { ...user, settings: { ...settings } };
     }),
+    updateUser: authProcedure
+        .input(z.object({ name: z.string().optional(), email: z.string().optional() }))
+        .mutation(async ({ input, ctx }) => {
+            const updatedUser = await prisma.user.update({
+                where: {
+                    email: ctx.user.email,
+                },
+                data: {
+                    name: input.name,
+                    email: input.email,
+                },
+            });
+
+            return updatedUser;
+        }),
 });
