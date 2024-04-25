@@ -27,12 +27,12 @@ const Settings = () => {
 
     const { data: user, isLoading } = trpc.getUser.useQuery();
     const userMutation = trpc.updateUser.useMutation({
-        onSuccess: () => toast({ title: "User updated", status: "success", duration: 5000, isClosable: true }),
-        onError: () => toast({ title: "User failed to update", status: "error", duration: 5000, isClosable: true }),
+        onSuccess: () => toast({ title: "User updated", status: "success", isClosable: true }),
+        onError: () => toast({ title: "User failed to update", status: "error", isClosable: true }),
     });
     const settingsMutation = trpc.updateSettings.useMutation({
-        onSuccess: () => toast({ title: "Settings updated", status: "success", duration: 5000, isClosable: true }),
-        onError: () => toast({ title: "Settings failed to update", status: "error", duration: 5000, isClosable: true }),
+        onSuccess: () => toast({ title: "Settings updated", status: "success", isClosable: true }),
+        onError: () => toast({ title: "Settings failed to update", status: "error", isClosable: true }),
     });
 
     const [name, setName] = useState(user?.name);
@@ -67,7 +67,7 @@ const Settings = () => {
 
     return (
         <>
-            <Flex justify={"center"} bg={useColorModeValue("gray.50", "gray.800")}>
+            <Flex justify="center" bg={useColorModeValue("gray.50", "gray.800")}>
                 <Stack
                     spacing={4}
                     w="full"
