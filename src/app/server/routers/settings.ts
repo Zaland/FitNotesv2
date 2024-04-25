@@ -5,7 +5,7 @@ import { router, authProcedure } from "../trpc";
 
 export const settingsRouter = router({
     updateSettings: authProcedure
-        .input(z.object({ darkMode: z.boolean().optional(), weightLb: z.boolean().optional() }))
+        .input(z.object({ weightLb: z.boolean().optional() }))
         .mutation(async ({ input, ctx }) => {
             const updatedUser = await prisma.user.update({
                 where: {
@@ -18,7 +18,6 @@ export const settingsRouter = router({
                                 userId: ctx.user.userId,
                             },
                             data: {
-                                darkMode: input.darkMode,
                                 weightLb: input.weightLb,
                             },
                         },

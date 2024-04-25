@@ -13,6 +13,7 @@ import {
     Avatar,
     useColorMode,
     Switch,
+    Divider,
     useToast,
 } from "@chakra-ui/react";
 import { useUser, withPageAuthRequired } from "@auth0/nextjs-auth0/client";
@@ -36,7 +37,6 @@ const Settings = () => {
 
     const [name, setName] = useState(user?.name);
     const [email, setEmail] = useState(user?.email);
-    const [darkMode, setDarkMode] = useState(user?.settings.darkMode);
     const [weightLb, setWeightLb] = useState(user?.settings.weightLb);
     const [userTouched, setUserTouched] = useState(false);
     const [settingsTouched, setSettingsTouched] = useState(false);
@@ -48,7 +48,6 @@ const Settings = () => {
     const handleReset = () => {
         setName(user?.name);
         setEmail(user?.email);
-        setDarkMode(user?.settings.darkMode);
         setWeightLb(user?.settings.weightLb);
         setUserTouched(false);
         setSettingsTouched(false);
@@ -56,7 +55,7 @@ const Settings = () => {
 
     const handleUpdate = async () => {
         if (settingsTouched) {
-            await settingsMutation.mutate({ darkMode, weightLb });
+            await settingsMutation.mutate({ weightLb });
             setSettingsTouched(false);
         }
 
@@ -85,7 +84,7 @@ const Settings = () => {
                     <FormControl id="userIcon" textAlign="center">
                         <Avatar size="xl" bg={colorMode === "light" ? "black" : "gray"} src={authUser?.picture || ""} />
                     </FormControl>
-                    <FormControl id="name" isRequired>
+                    <FormControl id="name">
                         <FormLabel>Name</FormLabel>
                         <Input
                             placeholder="Name"
@@ -97,7 +96,7 @@ const Settings = () => {
                             }}
                         />
                     </FormControl>
-                    <FormControl id="email" isRequired>
+                    <FormControl id="email">
                         <FormLabel>Email address</FormLabel>
                         <Input
                             placeholder="Email"
@@ -109,28 +108,26 @@ const Settings = () => {
                             }}
                         />
                     </FormControl>
-                    <FormControl id="darkMode" isRequired>
-                        <FormLabel>Dark mode</FormLabel>
+                    <FormControl id="darkMode">
+                        <FormLabel htmlFor="weight">Weight unit</FormLabel>
+                        <FormLabel display="inline" color={!weightLb ? "gray.200" : "gray.500"}>
+                            kg
+                        </FormLabel>
                         <Switch
-                            isChecked={darkMode}
-                            colorScheme="green"
-                            onChange={() => {
-                                setDarkMode((prev) => !prev);
-                                setSettingsTouched(true);
-                            }}
-                        />
-                    </FormControl>
-                    <FormControl id="darkMode" isRequired>
-                        <FormLabel>Weight in pounds (lb)</FormLabel>
-                        <Switch
+                            id="weight"
                             colorScheme="green"
                             isChecked={weightLb}
+                            size="lg"
                             onChange={() => {
                                 setWeightLb((prev) => !prev);
                                 setSettingsTouched(true);
                             }}
                         />
+                        <FormLabel display="inline" ml={3} color={weightLb ? "gray.200" : "gray.500"}>
+                            lb
+                        </FormLabel>
                     </FormControl>
+                    <Divider />
                     <Stack spacing={6} direction={["column", "row"]}>
                         <Button
                             w="full"
