@@ -19,7 +19,9 @@ export const userRouter = router({
             settings = await prisma.settings.create({ data: { userId: user.id } });
         }
 
-        return { ...user, settings: { ...settings } };
+        const weights = await prisma.weight.findMany({ where: { userId: user.id } });
+
+        return { ...user, settings: { ...settings }, weights: [...weights] };
     }),
     updateUser: authProcedure
         .input(z.object({ name: z.string().optional(), email: z.string().optional() }))

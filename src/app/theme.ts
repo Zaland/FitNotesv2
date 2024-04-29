@@ -9,19 +9,21 @@ export const theme = extendTheme({
         Link: {
             variants: {
                 default: ({ colorMode }: Variant) => ({
-                    color: colorMode === "light" ? "gray.900" : "gray.300",
+                    color: "green.400",
                     padding: "8px 12px",
                     borderRadius: "var(--chakra-radii-md)",
+                    fontWeight: 800,
                     _hover: {
                         textDecoration: "none",
-                        backgroundColor: colorMode === "light" ? "gray.200" : "whiteAlpha.300",
+                        backgroundColor: colorMode === "light" ? "gray.200" : "whiteAlpha.200",
                     },
                 }),
                 active: ({ colorMode }: Variant) => ({
-                    color: colorMode === "light" ? "gray.900" : "gray.300",
+                    color: "green.400",
                     padding: "8px 12px",
                     borderRadius: "var(--chakra-radii-md)",
-                    backgroundColor: colorMode === "light" ? "gray.300" : "gray.700",
+                    backgroundColor: colorMode === "light" ? "gray.200" : "gray.700",
+                    fontWeight: 800,
                     _hover: {
                         textDecoration: "none",
                     },
