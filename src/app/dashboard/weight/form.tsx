@@ -2,13 +2,6 @@ import { useState } from "react";
 import {
     useDisclosure,
     Button,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalCloseButton,
-    ModalBody,
-    ModalFooter,
     FormControl,
     FormLabel,
     NumberInput,
@@ -21,6 +14,7 @@ import {
 import moment from "moment";
 
 import { trpc } from "../../_trpc/client";
+import { Modal } from "./modal";
 
 export const CreateWeightForm = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -42,42 +36,26 @@ export const CreateWeightForm = () => {
                 Add Weight
             </Button>
 
-            <Modal isOpen={isOpen} onClose={onClose}>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>Add Weight</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>
-                        <FormControl mb={3} isRequired>
-                            <FormLabel>Weight (lb)</FormLabel>
-                            <NumberInput min={0} onChange={(value) => setWeight(Number(value))}>
-                                <NumberInputField />
-                                <NumberInputStepper>
-                                    <NumberIncrementStepper />
-                                    <NumberDecrementStepper />
-                                </NumberInputStepper>
-                            </NumberInput>
-                        </FormControl>
-                        <FormControl mb={3} isRequired>
-                            <FormLabel>Log date</FormLabel>
-                            <Input
-                                type="date"
-                                onChange={(event) => {
-                                    setDate(moment(event.target.value).toDate());
-                                }}
-                            />
-                        </FormControl>
-                    </ModalBody>
-
-                    <ModalFooter>
-                        <Button colorScheme="blue" mr={3} onClick={onClose}>
-                            Close
-                        </Button>
-                        <Button colorScheme="green" onClick={createWeight}>
-                            Submit
-                        </Button>
-                    </ModalFooter>
-                </ModalContent>
+            <Modal isOpen={isOpen} title="Add Weight" onSubmit={createWeight} onClose={onClose}>
+                <FormControl mb={3} isRequired>
+                    <FormLabel>Weight (lb)</FormLabel>
+                    <NumberInput min={0} onChange={(value) => setWeight(Number(value))}>
+                        <NumberInputField />
+                        <NumberInputStepper>
+                            <NumberIncrementStepper />
+                            <NumberDecrementStepper />
+                        </NumberInputStepper>
+                    </NumberInput>
+                </FormControl>
+                <FormControl mb={3}>
+                    <FormLabel>Log date</FormLabel>
+                    <Input
+                        type="date"
+                        onChange={(event) => {
+                            setDate(moment(event.target.value).toDate());
+                        }}
+                    />
+                </FormControl>
             </Modal>
         </>
     );

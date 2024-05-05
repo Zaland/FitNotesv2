@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import moment from "moment";
 import {
     Flex,
@@ -17,16 +18,20 @@ import {
     Td,
     Skeleton,
     IconButton,
+    useDisclosure,
 } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0/client";
 
 import { trpc } from "../../_trpc/client";
 import { CreateWeightForm } from "./form";
+import { Modal } from "./modal";
 
 const Weight = () => {
     const { data: user, isFetching } = trpc.getUser.useQuery();
     const weightMutation = trpc.deleteWeight.useMutation();
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [currentWeight, setCurrentWeight] = useState(0);
 
     return (
         <>
@@ -74,7 +79,10 @@ const Weight = () => {
                                                         icon={<DeleteIcon />}
                                                         aria-label="Delete Icon"
                                                         colorScheme="red"
-                                                        onClick={() => weightMutation.mutate({ id: weight.id })}
+                                                        onClick={() => {
+                                                            setCurrentWeight(weight.id);
+                                                            onOpen();
+                                                        }}
                                                     />
                                                 </Skeleton>
                                             </Td>
@@ -91,6 +99,17 @@ const Weight = () => {
                     <CreateWeightForm />
                 </Stack>
             </Flex>
+
+            <Modal
+                isOpen={isOpen}
+                title="Delete"
+                submitLabel="Confirm"
+                cancelLabel="Cancel"
+                onSubmit={() => weightMutation.mutate({ id: currentWeight })}
+                onClose={onClose}
+            >
+                <Text>Are you sure you want to delete this log?</Text>
+            </Modal>
         </>
     );
 };
