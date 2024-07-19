@@ -15,6 +15,11 @@ import {
     Switch,
     Divider,
     useToast,
+    NumberInput,
+    NumberInputField,
+    NumberInputStepper,
+    NumberIncrementStepper,
+    NumberDecrementStepper,
 } from "@chakra-ui/react";
 import { useUser, withPageAuthRequired } from "@auth0/nextjs-auth0/client";
 
@@ -38,6 +43,7 @@ const Settings = () => {
     const [name, setName] = useState(user?.name);
     const [email, setEmail] = useState(user?.email);
     const [weightLb, setWeightLb] = useState(user?.settings.weightLb);
+    const [goalWeight, setGoalWeight] = useState(user?.settings.goalWeight || 0);
     const [userTouched, setUserTouched] = useState(false);
     const [settingsTouched, setSettingsTouched] = useState(false);
 
@@ -49,13 +55,14 @@ const Settings = () => {
         setName(user?.name);
         setEmail(user?.email);
         setWeightLb(user?.settings.weightLb);
+        setGoalWeight(user?.settings.goalWeight || 0);
         setUserTouched(false);
         setSettingsTouched(false);
     };
 
     const handleUpdate = async () => {
         if (settingsTouched) {
-            await settingsMutation.mutate({ weightLb });
+            await settingsMutation.mutate({ weightLb, goalWeight });
             setSettingsTouched(false);
         }
 
@@ -126,6 +133,23 @@ const Settings = () => {
                         <FormLabel display="inline" ml={3} color={weightLb ? "gray.200" : "gray.500"}>
                             lb
                         </FormLabel>
+                    </FormControl>
+                    <FormControl>
+                        <FormLabel>Goal weight</FormLabel>
+                        <NumberInput
+                            min={0}
+                            onChange={(value) => {
+                                setGoalWeight(Number(value));
+                                setSettingsTouched(true);
+                            }}
+                            value={goalWeight}
+                        >
+                            <NumberInputField />
+                            <NumberInputStepper>
+                                <NumberIncrementStepper />
+                                <NumberDecrementStepper />
+                            </NumberInputStepper>
+                        </NumberInput>
                     </FormControl>
                     <Divider />
                     <Stack spacing={6} direction={["column", "row"]}>

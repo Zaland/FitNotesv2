@@ -19,7 +19,7 @@ export const userRouter = router({
             settings = await prisma.settings.create({ data: { userId: user.id } });
         }
 
-        const weights = await prisma.weight.findMany({ where: { userId: user.id } });
+        const weights = await prisma.weight.findMany({ where: { userId: user.id }, orderBy: [{ logDate: "asc" }] });
 
         return { ...user, settings: { ...settings }, weights: [...weights] };
     }),
