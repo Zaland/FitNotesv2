@@ -20,6 +20,7 @@ model User {
 model Settings {
   id        Int      @id @default(autoincrement())
   weightLb  Boolean  @default(false)
+  goalWeight Int     @default(0)
   userId    Int      @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
