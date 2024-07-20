@@ -10,6 +10,9 @@ import { trpc } from "../_trpc/client";
 const Dashboard = () => {
     const { data: user, isLoading } = trpc.getUser.useQuery();
 
+    const backgroundColor = useColorModeValue("gray.50", "gray.800");
+    const stackBackgroundColor = useColorModeValue("white", "gray.700");
+
     const data = user?.weights.map((weight) => ({
         weight: weight.weight,
         logDate: moment(weight.logDate).format("MMM Do"),
@@ -18,7 +21,7 @@ const Dashboard = () => {
     const CustomTooltip = ({ active, payload, label }: any) => {
         if (active && payload && payload.length) {
             return (
-                <Box bg={useColorModeValue("gray.50", "gray.800")} w={200} p={3}>
+                <Box bg={backgroundColor} w={200} p={3}>
                     <strong>
                         <Text fontSize="xl">{`${label}`}</Text>
                     </strong>
@@ -37,12 +40,12 @@ const Dashboard = () => {
                     Dashboard
                 </Heading>
 
-                <Flex justify={"center"} bg={useColorModeValue("gray.50", "gray.800")}>
+                <Flex justify={"center"} bg={backgroundColor}>
                     <Stack
                         spacing={4}
                         w="full"
                         maxW="xl"
-                        bg={useColorModeValue("white", "gray.700")}
+                        bg={stackBackgroundColor}
                         rounded="xl"
                         boxShadow="lg"
                         p={6}

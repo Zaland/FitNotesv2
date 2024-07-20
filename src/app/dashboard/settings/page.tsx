@@ -30,6 +30,9 @@ const Settings = () => {
     const { colorMode } = useColorMode();
     const toast = useToast();
 
+    const backgroundColor = useColorModeValue("gray.50", "gray.800");
+    const stackBackgroundColor = useColorModeValue("white", "gray.700");
+
     const { data: user, isLoading } = trpc.getUser.useQuery();
     const userMutation = trpc.updateUser.useMutation({
         onSuccess: () => toast({ title: "User updated", status: "success", isClosable: true }),
@@ -74,12 +77,12 @@ const Settings = () => {
 
     return (
         <>
-            <Flex justify="center" bg={useColorModeValue("gray.50", "gray.800")}>
+            <Flex justify="center" bg={backgroundColor}>
                 <Stack
                     spacing={4}
                     w="full"
                     maxW="md"
-                    bg={useColorModeValue("white", "gray.700")}
+                    bg={stackBackgroundColor}
                     rounded="xl"
                     boxShadow="lg"
                     p={6}

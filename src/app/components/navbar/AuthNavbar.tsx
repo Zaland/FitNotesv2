@@ -25,8 +25,10 @@ export const AuthNavbar = () => {
     const { colorMode, toggleColorMode } = useColorMode();
     const path = usePathname();
 
+    const navBackgroundColor = useColorModeValue("gray.100", "gray.900");
+
     return (
-        <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
+        <Box bg={navBackgroundColor} px={4}>
             <Flex h={16} alignItems="center" justifyContent="space-between">
                 <Flex alignItems="left" gap={12}>
                     <Link as={NextLink} href="/dashboard" variant={path === "/dashboard" ? "active" : "default"}>

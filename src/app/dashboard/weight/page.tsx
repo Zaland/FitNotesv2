@@ -33,14 +33,17 @@ const Weight = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [currentWeight, setCurrentWeight] = useState(0);
 
+    const backgroundColor = useColorModeValue("gray.50", "gray.800");
+    const stackBackgroundColor = useColorModeValue("white", "gray.700");
+
     return (
         <>
-            <Flex justify="center" bg={useColorModeValue("gray.50", "gray.800")}>
+            <Flex justify="center" bg={backgroundColor}>
                 <Stack
                     spacing={4}
                     w="full"
                     maxW="lg"
-                    bg={useColorModeValue("white", "gray.700")}
+                    bg={stackBackgroundColor}
                     rounded="xl"
                     boxShadow="lg"
                     p={6}
