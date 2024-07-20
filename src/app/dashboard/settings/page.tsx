@@ -9,7 +9,7 @@ import {
     Heading,
     Input,
     Stack,
-    useColorModeValue,
+    Container,
     Avatar,
     useColorMode,
     Switch,
@@ -29,9 +29,6 @@ const Settings = () => {
     const { user: authUser } = useUser();
     const { colorMode } = useColorMode();
     const toast = useToast();
-
-    const backgroundColor = useColorModeValue("gray.50", "gray.800");
-    const stackBackgroundColor = useColorModeValue("white", "gray.700");
 
     const { data: user, isLoading } = trpc.getUser.useQuery();
     const userMutation = trpc.updateUser.useMutation({
@@ -77,103 +74,100 @@ const Settings = () => {
 
     return (
         <>
-            <Flex justify="center" bg={backgroundColor}>
-                <Stack
-                    spacing={4}
-                    w="full"
-                    maxW="md"
-                    bg={stackBackgroundColor}
-                    rounded="xl"
-                    boxShadow="lg"
-                    p={6}
-                    my={12}
-                >
-                    <Heading textAlign="center" color="green.400">
-                        Settings
-                    </Heading>
-                    <FormControl id="userIcon" textAlign="center">
-                        <Avatar size="xl" bg={colorMode === "light" ? "black" : "gray"} src={authUser?.picture || ""} />
-                    </FormControl>
-                    <FormControl id="name">
-                        <FormLabel>Name</FormLabel>
-                        <Input
-                            placeholder="Name"
-                            type="text"
-                            value={name || ""}
-                            onChange={(event) => {
-                                setName(event.target.value);
-                                setUserTouched(true);
-                            }}
-                        />
-                    </FormControl>
-                    <FormControl id="email">
-                        <FormLabel>Email address</FormLabel>
-                        <Input
-                            placeholder="Email"
-                            type="email"
-                            value={email || ""}
-                            onChange={(event) => {
-                                setEmail(event.target.value);
-                                setUserTouched(true);
-                            }}
-                        />
-                    </FormControl>
-                    <FormControl id="darkMode">
-                        <FormLabel htmlFor="weight">Weight unit</FormLabel>
-                        <FormLabel display="inline" color={!weightLb ? "gray.200" : "gray.500"}>
-                            kg
-                        </FormLabel>
-                        <Switch
-                            id="weight"
-                            colorScheme="green"
-                            isChecked={weightLb}
-                            size="lg"
-                            onChange={() => {
-                                setWeightLb((prev) => !prev);
-                                setSettingsTouched(true);
-                            }}
-                        />
-                        <FormLabel display="inline" ml={3} color={weightLb ? "gray.200" : "gray.500"}>
-                            lb
-                        </FormLabel>
-                    </FormControl>
-                    <FormControl>
-                        <FormLabel>Goal weight</FormLabel>
-                        <NumberInput
-                            min={0}
-                            onChange={(value) => {
-                                setGoalWeight(Number(value));
-                                setSettingsTouched(true);
-                            }}
-                            value={goalWeight}
-                        >
-                            <NumberInputField />
-                            <NumberInputStepper>
-                                <NumberIncrementStepper />
-                                <NumberDecrementStepper />
-                            </NumberInputStepper>
-                        </NumberInput>
-                    </FormControl>
-                    <Divider />
-                    <Stack spacing={6} direction={["column", "row"]}>
-                        <Button
-                            w="full"
-                            colorScheme="red"
-                            isDisabled={!userTouched && !settingsTouched}
-                            onClick={handleReset}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            w="full"
-                            colorScheme="green"
-                            isDisabled={!userTouched && !settingsTouched}
-                            onClick={handleUpdate}
-                        >
-                            Submit
-                        </Button>
+            <Flex justify="center">
+                <Container variant="default">
+                    <Stack spacing={4}>
+                        <Heading textAlign="center" variant="title">
+                            Settings
+                        </Heading>
+                        <FormControl id="userIcon" textAlign="center">
+                            <Avatar
+                                size="xl"
+                                bg={colorMode === "light" ? "black" : "gray"}
+                                src={authUser?.picture || ""}
+                            />
+                        </FormControl>
+                        <FormControl id="name">
+                            <FormLabel>Name</FormLabel>
+                            <Input
+                                placeholder="Name"
+                                type="text"
+                                value={name || ""}
+                                onChange={(event) => {
+                                    setName(event.target.value);
+                                    setUserTouched(true);
+                                }}
+                            />
+                        </FormControl>
+                        <FormControl id="email">
+                            <FormLabel>Email address</FormLabel>
+                            <Input
+                                placeholder="Email"
+                                type="email"
+                                value={email || ""}
+                                onChange={(event) => {
+                                    setEmail(event.target.value);
+                                    setUserTouched(true);
+                                }}
+                            />
+                        </FormControl>
+                        <FormControl id="darkMode">
+                            <FormLabel htmlFor="weight">Weight unit</FormLabel>
+                            <FormLabel display="inline" color={!weightLb ? "gray.200" : "gray.500"}>
+                                kg
+                            </FormLabel>
+                            <Switch
+                                id="weight"
+                                colorScheme="green"
+                                isChecked={weightLb}
+                                size="lg"
+                                onChange={() => {
+                                    setWeightLb((prev) => !prev);
+                                    setSettingsTouched(true);
+                                }}
+                            />
+                            <FormLabel display="inline" ml={3} color={weightLb ? "gray.200" : "gray.500"}>
+                                lb
+                            </FormLabel>
+                        </FormControl>
+                        <FormControl>
+                            <FormLabel>Goal weight</FormLabel>
+                            <NumberInput
+                                min={0}
+                                onChange={(value) => {
+                                    setGoalWeight(Number(value));
+                                    setSettingsTouched(true);
+                                }}
+                                value={goalWeight}
+                            >
+                                <NumberInputField />
+                                <NumberInputStepper>
+                                    <NumberIncrementStepper />
+                                    <NumberDecrementStepper />
+                                </NumberInputStepper>
+                            </NumberInput>
+                        </FormControl>
+                        <Divider />
+                        <Stack spacing={6} direction={["column", "row"]}>
+                            <Button
+                                w="full"
+                                colorScheme="red"
+                                isDisabled={!userTouched && !settingsTouched}
+                                onClick={handleReset}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                w="full"
+                                colorScheme="green"
+                                isDisabled={!userTouched && !settingsTouched}
+                                onClick={handleUpdate}
+                            >
+                                Submit
+                            </Button>
+                        </Stack>
                     </Stack>
-                </Stack>
+                </Container>
             </Flex>
         </>
     );

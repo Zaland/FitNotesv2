@@ -5,8 +5,8 @@ import moment from "moment";
 import {
     Flex,
     Heading,
+    Container,
     Stack,
-    useColorModeValue,
     Divider,
     Table,
     TableContainer,
@@ -33,74 +33,64 @@ const Weight = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [currentWeight, setCurrentWeight] = useState(0);
 
-    const backgroundColor = useColorModeValue("gray.50", "gray.800");
-    const stackBackgroundColor = useColorModeValue("white", "gray.700");
-
     return (
         <>
-            <Flex justify="center" bg={backgroundColor}>
-                <Stack
-                    spacing={4}
-                    w="full"
-                    maxW="lg"
-                    bg={stackBackgroundColor}
-                    rounded="xl"
-                    boxShadow="lg"
-                    p={6}
-                    my={12}
-                >
-                    <Heading textAlign="center" color="green.400">
-                        Weight
-                    </Heading>
+            <Flex justify="center">
+                <Container variant="default">
+                    <Stack spacing={4}>
+                        <Heading textAlign="center" variant="title">
+                            Weight
+                        </Heading>
 
-                    <Divider />
+                        <Divider />
 
-                    {user?.weights.length ? (
-                        <TableContainer>
-                            <Table variant="simple">
-                                <Thead>
-                                    <Tr>
-                                        <Th>Weight ({user.settings.weightLb ? "lb" : "kg"})</Th>
-                                        <Th>Log date</Th>
-                                        <Th />
-                                    </Tr>
-                                </Thead>
-                                <Tbody>
-                                    {user?.weights.map((weight) => (
-                                        <Tr key={weight.id}>
-                                            <Td>
-                                                <Skeleton isLoaded={!isFetching}>{weight.weight}</Skeleton>
-                                            </Td>
-                                            <Td>
-                                                <Skeleton isLoaded={!isFetching}>
-                                                    {moment(weight.logDate).format("MMMM DD, YYYY")}
-                                                </Skeleton>
-                                            </Td>
-                                            <Td textAlign="end">
-                                                <Skeleton isLoaded={!isFetching}>
-                                                    <IconButton
-                                                        icon={<DeleteIcon />}
-                                                        aria-label="Delete Icon"
-                                                        colorScheme="red"
-                                                        onClick={() => {
-                                                            setCurrentWeight(weight.id);
-                                                            onOpen();
-                                                        }}
-                                                    />
-                                                </Skeleton>
-                                            </Td>
+                        {user?.weights.length ? (
+                            <TableContainer>
+                                <Table variant="simple">
+                                    <Thead>
+                                        <Tr>
+                                            <Th>Weight ({user.settings.weightLb ? "lb" : "kg"})</Th>
+                                            <Th>Log date</Th>
+                                            <Th />
                                         </Tr>
-                                    ))}
-                                </Tbody>
-                            </Table>
-                        </TableContainer>
-                    ) : (
-                        <Text align="center">Nothing here, add some data!</Text>
-                    )}
+                                    </Thead>
+                                    <Tbody>
+                                        {user?.weights.map((weight) => (
+                                            <Tr key={weight.id}>
+                                                <Td>
+                                                    <Skeleton isLoaded={!isFetching}>{weight.weight}</Skeleton>
+                                                </Td>
+                                                <Td>
+                                                    <Skeleton isLoaded={!isFetching}>
+                                                        {moment(weight.logDate).format("MMMM DD, YYYY")}
+                                                    </Skeleton>
+                                                </Td>
+                                                <Td textAlign="end">
+                                                    <Skeleton isLoaded={!isFetching}>
+                                                        <IconButton
+                                                            icon={<DeleteIcon />}
+                                                            aria-label="Delete Icon"
+                                                            colorScheme="red"
+                                                            onClick={() => {
+                                                                setCurrentWeight(weight.id);
+                                                                onOpen();
+                                                            }}
+                                                        />
+                                                    </Skeleton>
+                                                </Td>
+                                            </Tr>
+                                        ))}
+                                    </Tbody>
+                                </Table>
+                            </TableContainer>
+                        ) : (
+                            <Text align="center">Nothing here, add some data!</Text>
+                        )}
 
-                    <Divider />
-                    <CreateWeightForm />
-                </Stack>
+                        <Divider />
+                        <CreateWeightForm />
+                    </Stack>
+                </Container>
             </Flex>
 
             <Modal
